@@ -17,7 +17,7 @@ export function HeroSection() {
       <GridBackground />
 
       <div className="container relative z-10">
-        <div className="flex flex-col items-center text-center">
+        <div className="flex flex-col items-center pt-20 text-center sm:pt-0">
           {/* Status indicator */}
           <div className="mb-6 flex items-center gap-2 rounded-full border border-primary/30 bg-card/50 px-4 py-2 backdrop-blur-sm">
             <span className="relative flex h-2 w-2">
