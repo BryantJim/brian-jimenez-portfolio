@@ -1,28 +1,39 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import Image from "next/image";
+import { useTheme } from "next-themes";
+import { Menu, X, Sun, Moon } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const navItems = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Skills", href: "#skills" },
-  { label: "Projects", href: "#projects" },
-  { label: "Experience", href: "#experience" },
-  { label: "Contact", href: "#contact" },
-];
+import { useLanguage } from "@/contexts/language-context";
+import type { Lang } from "@/lib/translations";
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const [mounted, setMounted] = useState(false);
+
+  const { resolvedTheme, setTheme } = useTheme();
+  const { lang, setLang, t } = useLanguage();
+
+  const navItems = [
+    { label: t.nav.home, href: "#home" },
+    { label: t.nav.about, href: "#about" },
+    { label: t.nav.skills, href: "#skills" },
+    { label: t.nav.projects, href: "#projects" },
+    { label: t.nav.experience, href: "#experience" },
+    { label: t.nav.contact, href: "#contact" },
+  ];
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
 
-      // Update active section based on scroll position
       const sections = navItems.map((item) => item.href.substring(1));
       for (const section of sections.reverse()) {
         const element = document.getElementById(section);
@@ -38,7 +49,7 @@ export function Navigation() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [navItems]);
 
   const handleNavClick = (href: string) => {
     setIsMobileMenuOpen(false);
@@ -46,6 +57,14 @@ export function Navigation() {
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
+  };
+
+  const toggleTheme = () => {
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
+  };
+
+  const toggleLang = () => {
+    setLang(lang === "en" ? "es" : ("en" as Lang));
   };
 
   return (
@@ -68,13 +87,14 @@ export function Navigation() {
             }}
             className="flex items-center gap-2"
           >
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-primary/50 bg-primary/10">
-              <span
-                className="text-sm font-bold text-primary"
-                style={{ fontFamily: "var(--font-orbitron)" }}
-              >
-                AB
-              </span>
+            <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg">
+              <Image
+                src="/LogoAnthony.png"
+                alt="Anthony Brian Logo"
+                width={36}
+                height={36}
+                className="h-full w-full object-contain"
+              />
             </div>
             <span className="hidden font-semibold text-foreground sm:block">
               Anthony Brian
@@ -103,28 +123,59 @@ export function Navigation() {
             ))}
           </div>
 
-          {/* Status indicator (desktop) */}
-          <div className="hidden items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 md:flex">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-chart-2 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-chart-2" />
-            </span>
-            <span className="text-xs font-medium text-primary">Available</span>
-          </div>
+          {/* Right side controls */}
+          <div className="flex items-center gap-2">
+            {/* Language toggle */}
+            <button
+              type="button"
+              onClick={toggleLang}
+              className="flex h-8 w-14 items-center justify-center rounded-lg border border-border bg-card/50 font-mono text-xs font-bold text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
+              aria-label="Toggle language"
+            >
+              {lang === "en" ? "ES" : "EN"}
+            </button>
 
-          {/* Mobile menu button */}
-          <button
-            type="button"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-card/50 md:hidden"
-            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-          >
-            {isMobileMenuOpen ? (
-              <X className="h-5 w-5" />
-            ) : (
-              <Menu className="h-5 w-5" />
-            )}
-          </button>
+            {/* Theme toggle */}
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-card/50 text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
+              aria-label="Toggle theme"
+            >
+              {mounted ? (
+                resolvedTheme === "dark" ? (
+                  <Sun className="h-4 w-4" />
+                ) : (
+                  <Moon className="h-4 w-4" />
+                )
+              ) : (
+                <span className="h-4 w-4" />
+              )}
+            </button>
+
+            {/* Status indicator (desktop) */}
+            <div className="hidden items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 md:flex">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-chart-2 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-chart-2" />
+              </span>
+              <span className="text-xs font-medium text-primary">{t.nav.available}</span>
+            </div>
+
+            {/* Mobile menu button */}
+            <button
+              type="button"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-card/50 md:hidden"
+              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+            >
+              {isMobileMenuOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -143,9 +194,7 @@ export function Navigation() {
                     ? "text-primary"
                     : "text-muted-foreground hover:text-foreground"
                 )}
-                style={{
-                  animationDelay: `${index * 50}ms`,
-                }}
+                style={{ animationDelay: `${index * 50}ms` }}
               >
                 <span className="mr-3 font-mono text-sm text-primary/50">
                   0{index + 1}
@@ -154,14 +203,40 @@ export function Navigation() {
               </button>
             ))}
 
+            {/* Mobile controls */}
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={toggleLang}
+                className="flex h-10 w-16 items-center justify-center rounded-lg border border-border bg-card/50 font-mono text-sm font-bold text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
+              >
+                {lang === "en" ? "ES" : "EN"}
+              </button>
+              <button
+                type="button"
+                onClick={toggleTheme}
+                className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-card/50 text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
+              >
+                {mounted ? (
+                  resolvedTheme === "dark" ? (
+                    <Sun className="h-5 w-5" />
+                  ) : (
+                    <Moon className="h-5 w-5" />
+                  )
+                ) : (
+                  <span className="h-5 w-5" />
+                )}
+              </button>
+            </div>
+
             {/* Status indicator (mobile) */}
-            <div className="mt-8 flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2">
+            <div className="flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-chart-2 opacity-75" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-chart-2" />
               </span>
               <span className="text-sm font-medium text-primary">
-                Available for opportunities
+                {t.nav.availableFor}
               </span>
             </div>
           </div>

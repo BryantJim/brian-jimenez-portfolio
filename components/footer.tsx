@@ -1,26 +1,29 @@
 "use client";
 
+import Image from "next/image";
 import { Github, Linkedin, Mail, Heart } from "lucide-react";
+import { useLanguage } from "@/contexts/language-context";
 
 export function Footer() {
+  const { t } = useLanguage();
   const currentYear = new Date().getFullYear();
 
   return (
     <footer className="relative border-t border-border bg-card/30 py-8">
-      {/* Top accent line */}
       <div className="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
 
       <div className="container">
         <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
           {/* Logo and copyright */}
           <div className="flex items-center gap-4">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-primary/50 bg-primary/10">
-              <span
-                className="text-xs font-bold text-primary"
-                style={{ fontFamily: "var(--font-orbitron)" }}
-              >
-                AB
-              </span>
+            <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg">
+              <Image
+                src="/LogoAnthony.png"
+                alt="Anthony Brian Logo"
+                width={32}
+                height={32}
+                className="h-full w-full object-contain"
+              />
             </div>
             <div className="text-sm text-muted-foreground">
               <span className="text-foreground">{currentYear}</span> Anthony
@@ -59,8 +62,7 @@ export function Footer() {
 
           {/* Built with */}
           <div className="flex items-center gap-1 text-xs text-muted-foreground">
-            Built with <Heart className="h-3 w-3 text-destructive" /> using
-            React & Tailwind CSS
+            {t.footer.builtWith} <Heart className="h-3 w-3 text-destructive" /> {t.footer.using}
           </div>
         </div>
       </div>

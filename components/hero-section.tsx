@@ -1,10 +1,14 @@
 "use client";
 
-import { Github, Linkedin, ChevronDown, Download } from "lucide-react";
+import React from "react";
+import { Github, Linkedin, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GridBackground } from "./grid-background";
+import { useLanguage } from "@/contexts/language-context";
 
 export function HeroSection() {
+  const { t } = useLanguage();
+
   return (
     <section
       id="home"
@@ -20,42 +24,37 @@ export function HeroSection() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan" />
             </span>
-            <span className="text-sm text-muted-foreground">
-              Available for opportunities
-            </span>
+            <span className="text-sm text-muted-foreground">{t.hero.available}</span>
           </div>
 
           {/* Main heading */}
-          <h1 className="mb-4 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+          <h1
+            className="mb-4 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
+            style={{ fontFamily: "var(--font-orbitron)" }}
+          >
             <span className="block text-foreground">Anthony Brian</span>
-            <span
-              className="mt-2 block bg-gradient-to-r from-primary via-cyan to-primary bg-clip-text text-transparent"
-              style={{ fontFamily: "var(--font-orbitron)" }}
-            >
+            <span className="mt-2 block bg-gradient-to-r from-primary via-cyan to-primary bg-clip-text text-transparent">
               Jiménez López
             </span>
           </h1>
 
           {/* Role/Title */}
           <div className="mb-6 flex flex-wrap items-center justify-center gap-2 font-mono text-sm text-muted-foreground sm:text-base">
-            <span className="rounded border border-border bg-card/50 px-3 py-1">
-              Software Developer
-            </span>
-            <span className="text-primary">/</span>
-            <span className="rounded border border-border bg-card/50 px-3 py-1">
-              Full Stack
-            </span>
-            <span className="text-primary">/</span>
-            <span className="rounded border border-border bg-card/50 px-3 py-1">
-              Systems Engineer
-            </span>
+            {t.hero.roles.map((role, i) => (
+              <React.Fragment key={role}>
+                <span className="rounded border border-border bg-card/50 px-3 py-1">
+                  {role}
+                </span>
+                {i < t.hero.roles.length - 1 && (
+                  <span className="text-primary">/</span>
+                )}
+              </React.Fragment>
+            ))}
           </div>
 
           {/* Tagline */}
           <p className="mb-8 max-w-2xl text-balance text-lg text-muted-foreground sm:text-xl">
-            Building scalable solutions and transforming complex problems into
-            elegant, high-quality software. Passionate about technology,
-            innovation, and continuous improvement.
+            {t.hero.tagline}
           </p>
 
           {/* CTA Buttons */}
@@ -69,7 +68,7 @@ export function HeroSection() {
                   ?.scrollIntoView({ behavior: "smooth" })
               }
             >
-              <span className="relative z-10">View Projects</span>
+              <span className="relative z-10">{t.hero.viewProjects}</span>
               <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform group-hover:translate-x-full" />
             </Button>
 
@@ -104,18 +103,11 @@ export function HeroSection() {
                 LinkedIn
               </a>
             </Button>
-
-            
           </div>
 
-          {/* Stats/Quick info */}
+          {/* Stats */}
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {[
-              { value: "4+", label: "Years Experience" },
-              { value: "10+", label: "Projects Delivered" },
-              { value: "5+", label: "Technologies" },
-              { value: "100%", label: "Commitment" },
-            ].map((stat) => (
+            {t.hero.stats.map((stat) => (
               <div
                 key={stat.label}
                 className="rounded-lg border border-border/50 bg-card/30 px-4 py-3 backdrop-blur-sm"
@@ -145,7 +137,7 @@ export function HeroSection() {
           className="flex flex-col items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
           aria-label="Scroll to about section"
         >
-          <span className="text-xs font-mono">SCROLL</span>
+          <span className="text-xs font-mono">{t.hero.scroll}</span>
           <ChevronDown className="h-5 w-5 animate-bounce" />
         </button>
       </div>
