@@ -58,10 +58,10 @@ export function HeroSection() {
           </p>
 
           {/* CTA Buttons */}
-          <div className="mb-12 flex flex-wrap items-center justify-center gap-4">
+          <div className="mb-12 flex w-full flex-col items-stretch gap-3 px-4 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:px-0">
             <Button
               size="lg"
-              className="group relative overflow-hidden bg-primary text-primary-foreground hover:bg-primary/90"
+              className="group relative w-full overflow-hidden bg-primary text-primary-foreground hover:bg-primary/90 sm:w-auto"
               onClick={() =>
                 document
                   .getElementById("projects")
@@ -72,37 +72,39 @@ export function HeroSection() {
               <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform group-hover:translate-x-full" />
             </Button>
 
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-primary/50 hover:border-primary hover:bg-primary/10 bg-transparent"
-              asChild
-            >
-              <a
-                href="https://github.com/BryantJim"
-                target="_blank"
-                rel="noopener noreferrer"
+            <div className="flex gap-3 sm:contents">
+              <Button
+                size="lg"
+                variant="outline"
+                className="flex-1 border-primary/50 hover:border-primary hover:bg-primary/10 bg-transparent sm:flex-none"
+                asChild
               >
-                <Github className="mr-2 h-5 w-5" />
-                GitHub
-              </a>
-            </Button>
+                <a
+                  href="https://github.com/BryantJim"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Github className="mr-2 h-5 w-5" />
+                  GitHub
+                </a>
+              </Button>
 
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-cyan/50 hover:border-cyan hover:bg-cyan/10 bg-transparent"
-              asChild
-            >
-              <a
-                href="https://www.linkedin.com/in/anthony-brian-jiménez-lópez-3a2878230"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Button
+                size="lg"
+                variant="outline"
+                className="flex-1 border-cyan/50 hover:border-cyan hover:bg-cyan/10 bg-transparent sm:flex-none"
+                asChild
               >
-                <Linkedin className="mr-2 h-5 w-5" />
-                LinkedIn
-              </a>
-            </Button>
+                <a
+                  href="https://www.linkedin.com/in/anthony-brian-jiménez-lópez-3a2878230"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Linkedin className="mr-2 h-5 w-5" />
+                  LinkedIn
+                </a>
+              </Button>
+            </div>
           </div>
 
           {/* Stats */}

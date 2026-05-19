@@ -29,13 +29,17 @@ export const metadata: Metadata = {
     "Web Development",
   ],
   authors: [{ name: "Anthony Brian Jiménez López" }],
+  icons: {
+    icon: "/LogoAnthony.png",
+    apple: "/LogoAnthony.png",
+  },
   openGraph: {
     title: "Anthony Brian Jimenez | Software Developer",
     description:
       "Systems Engineer specializing in scalable software solutions",
     type: "website",
   },
-    generator: 'v0.app'
+  generator: "v0.app",
 };
 
 export const viewport: Viewport = {
